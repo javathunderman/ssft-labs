@@ -1,0 +1,4 @@
+node average (x, y: real) returns (out: real);
+let
+	out = (x + y) / 2.0;
+tel

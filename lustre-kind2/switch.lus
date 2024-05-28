@@ -1,0 +1,5 @@
+node switch (on, off: bool) returns (up: bool);
+let
+    up = false -> if not pre up then on
+                  else not off;
+tel

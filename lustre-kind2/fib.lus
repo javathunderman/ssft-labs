@@ -1,0 +1,4 @@
+node Fib () returns (u: int);
+let
+    u = 1 -> pre (1 -> u + pre u);
+tel

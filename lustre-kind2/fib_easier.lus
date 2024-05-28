@@ -1,0 +1,6 @@
+node Fib () returns (u: int);
+var v: int;
+let
+    u = 1-> pre v;
+    v = 1 -> u + pre u;
+tel
