@@ -1,3 +1,6 @@
 [submodule "lean/ssft24"]
 	path = lean/ssft24
 	url = https://github.com/david-christiansen/ssft24
+[submodule "LEGOs"]
+	path = LEGOs
+	url = git@github.com:NickF0211/LEGOs.git
