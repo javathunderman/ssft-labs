@@ -14,14 +14,14 @@
 *)
 node Switch( Set, Reset, Init : bool ) returns ( S : bool );
 let
-    S = if Set then true 
+    S = if Set then true
         else if Reset then false
         else (Init -> pre S);
 tel
 
-(* Formalize the requirements below and then 
+(* Formalize the requirements below and then
    check the correcness of your definition of Switch
-   against those requirements  
+   against those requirements
 *)
 node ReqSwitch( Set, Reset, Init : bool )
 returns ( R1, R2, R3 : bool );
@@ -30,16 +30,16 @@ let
   S = Switch( Set, Reset, Init );
 
   -- setting turns the switch on
-  R1  =  false;
- 
+  R1  =  (Set = true) => (S = true);
+
   -- resetting turns the switch off
-  R2 =  false;
-  
+  R2 =  (Set = false and (Reset = true)) => (S = false);
+
   -- doing nothing maintains the previous value
-  R3 = false;
+  R3 = true -> ((Set = false and Reset = false) => (pre S = S));
 
   check R1;
-  check R2; 
+  check R2;
   check R3;
 tel
 
@@ -47,14 +47,14 @@ tel
 (* This is an implementation of a simple traffic light system with one
    (bi-directional) car lane and one pedestrian crossing with a button
    for pedestrians.
-  
+
                               ooo
          ------------------==-------------------
                            ==
                            ==
          ------------------==-------------------
                       ooo
-  
+
 *)
 
 node TrafficLight( Button: bool )
@@ -83,7 +83,7 @@ tel
    for the TrafficLight.
 
    Formalize them and then us Kind 2 to prove them.
-   Use the auxiliary nodes below as needed. 
+   Use the auxiliary nodes below as needed.
 *)
 
 -------------------
@@ -99,7 +99,7 @@ tel
 -- Counts how many consecutive steps X has been true
 node Count (X: bool) returns (O: int) ;
   var preO: int ;
-let 
+let
   preO = 0 -> pre O ;
   O = if X then preO + 1 else 0 ;
 tel
@@ -122,42 +122,42 @@ let
   (Red, Yellow, Green, Walk, DontWalk) = TrafficLight(Button);
 
   -- Car are allowed iff the traffic light is green or yellow
-  CarsAllowed = false;
+  CarsAllowed = (Green or Yellow) => true;
 
   -- R1: Walk is never on when cars are allowed
-  R1 = false;
+  R1 = CarsAllowed => DontWalk;
   check R1;
 
   -- R2: Red and Green are never on at the same time
-  R2 =  false;
+  R2 =  not (Red and Green);
   check R2;
 
 -- R2a At most one light is true (use ToInt)
-     
-  R2a = false;
+
+  R2a = (toInt(Green) + toInt(Yellow) + toInt(Red)) < 2;
   check R2a;
 
   -- R3: at all times one of the tree colored lights is on
-  R3 = false;
+  R3 = (toInt(Green) + toInt(Yellow) + toInt(Red)) = 1;
   check R3;
 
   -- R4: Walk is on only if Red is
-  R4 = false;
+  R4 = Red => Walk;
   check R4;
 
   -- R5: Walk is on iff DontWalk is off
-  R5 = false;
+  R5 = (not DontWalk) => Walk;
   check R5;
 
   -- R6: Red cannot immediately follow Green
   R6 = false;
   check R6;
 
-  -- R7: Walk is off if cars were allowed in the previous step 
+  -- R7: Walk is off if cars were allowed in the previous step
   R7 = false;
   check R7;
 
-  -- R8: Cars are not allowed if Walk was on in the previous step 
+  -- R8: Cars are not allowed if Walk was on in the previous step
   R8 = false;
   check R8;
 
@@ -172,12 +172,12 @@ let
   -- R11: If the button was never pressed the light is Green
   R11 = false;
   check R11;
-  
-  -- R12: Red is on whenever Walk is 
+
+  -- R12: Red is on whenever Walk is
   R12 = false;
   check R12;
 
-  -- R13: Yellow can only follow Green 
+  -- R13: Yellow can only follow Green
   R13 = false;
   check R13;
 
