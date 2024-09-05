@@ -25,3 +25,9 @@ def map_proof_len : (map xs func).length = xs.length := by
 
 
 -- def map_proof_type {α : Type} : ∀ (l : List α) you cannot do this in lean, church style vs curry style?
+
+inductive Tree (α: Type) where
+  | leaf: Tree α
+  | branch (name: string) (left: Tree α) (val: α) (right: Tree α): Tree α
+
+inductive All (p: α -> Prop) -> Tree α -> Prop where
